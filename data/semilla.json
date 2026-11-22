@@ -1,0 +1,87 @@
+{
+  "usuarios": [
+    {
+      "identificacion": "1000000001",
+      "nombre": "Administrador Acme",
+      "email": "admin@acme.edu",
+      "telefono": "3001234567",
+      "cargo": "Administrativo",
+      "password": "Admin123"
+    }
+  ],
+  "examenes": [
+    {
+      "codigo": "JS-101",
+      "titulo": "Fundamentos de JavaScript",
+      "tiempo": 10,
+      "aprobacion": 60,
+      "descripcion": "Evalúa tipos de datos, operadores, objetos y promesas.",
+      "preguntas": [
+        {
+          "enunciado": "¿Qué imprime console.log(\"5\" + 1)?",
+          "respuestas": [
+            { "descripcion": "6", "correcta": false },
+            { "descripcion": "51", "correcta": true },
+            { "descripcion": "NaN", "correcta": false }
+          ]
+        },
+        {
+          "enunciado": "¿Qué operador compara valor y tipo?",
+          "respuestas": [
+            { "descripcion": "==", "correcta": false },
+            { "descripcion": "=", "correcta": false },
+            { "descripcion": "===", "correcta": true }
+          ]
+        },
+        {
+          "enunciado": "¿Qué devuelve find() si ningún elemento cumple la condición?",
+          "respuestas": [
+            { "descripcion": "-1", "correcta": false },
+            { "descripcion": "null", "correcta": false },
+            { "descripcion": "undefined", "correcta": true }
+          ]
+        },
+        {
+          "enunciado": "¿Qué palabra permite esperar una promesa dentro de una función async?",
+          "respuestas": [
+            { "descripcion": "await", "correcta": true },
+            { "descripcion": "then", "correcta": false },
+            { "descripcion": "wait", "correcta": false }
+          ]
+        }
+      ]
+    },
+    {
+      "codigo": "DOM-201",
+      "titulo": "Manipulación del DOM",
+      "tiempo": 5,
+      "aprobacion": 70,
+      "descripcion": "Preguntas rápidas sobre selección de elementos, clases y jerarquía.",
+      "preguntas": [
+        {
+          "enunciado": "¿Qué propiedad permite usar add, remove y toggle con clases?",
+          "respuestas": [
+            { "descripcion": "classList", "correcta": true },
+            { "descripcion": "style", "correcta": false },
+            { "descripcion": "innerHTML", "correcta": false }
+          ]
+        },
+        {
+          "enunciado": "¿Qué colección tiene forEach?",
+          "respuestas": [
+            { "descripcion": "HTMLCollection", "correcta": false },
+            { "descripcion": "NodeList", "correcta": true }
+          ]
+        },
+        {
+          "enunciado": "Para mostrar texto escrito por un usuario se usa…",
+          "respuestas": [
+            { "descripcion": "innerHTML", "correcta": false },
+            { "descripcion": "outerHTML", "correcta": false },
+            { "descripcion": "textContent", "correcta": true }
+          ]
+        }
+      ]
+    }
+  ]
+}
