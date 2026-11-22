@@ -1,1 +1,79 @@
 /* ---------- estilos ---------- */
+:root {
+  --primario: #4338ca;
+  --primario-oscuro: #3730a3;
+  --primario-claro: #eef0ff;
+  --primario-medio: #e0e3ff;
+  --ambar: #f59e0b;
+  --ambar-claro: #fff7e6;
+  --verde: #15803d;
+  --verde-claro: #e9f8ef;
+  --rojo: #dc2626;
+  --rojo-claro: #fdecec;
+  --tinta: #1b1f3b;
+  --texto: #33385a;
+  --suave: #6b7090;
+  --borde: #e5e7f0;
+  --fondo: #f6f6fb;
+  --blanco: #ffffff;
+  --fuente: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  --radio: 14px;
+  --sombra: 0 1px 2px rgba(27, 31, 59, 0.05), 0 10px 30px -12px rgba(27, 31, 59, 0.18);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  font: 16px/1.5 var(--fuente);
+  color: var(--texto);
+  background: var(--fondo);
+}
+
+h1,h2,h3 {
+  margin: 0;
+  color: var(--tinta);
+  line-height: 1.2;
+}
+
+h1 {
+  font-size: clamp(1.6rem, 3vw, 2.1rem);
+}
+
+h2 {
+  font-size: 1.15rem;
+}
+
+p {
+  margin: 0;
+}
+
+button,input,select,textarea {
+  font: inherit;
+  color: inherit;
+}
+/* ---------- Contenedor ---------- */
+.contenedor {
+  width: min(1150px, 100% - 2rem);
+  margin-inline: auto;
+}
+
+main.contenedor {
+  flex: 1;
+  padding-block: 2rem 3rem;
+}
+
+/* ---------- Pie ---------- */
+.pie {
+  text-align: center;
+  padding: 1.5rem;
+  color: var(--suave);
+  font-size: 0.85rem;
+  border-top: 1px solid var(--borde);
+  background: var(--blanco);
+}
