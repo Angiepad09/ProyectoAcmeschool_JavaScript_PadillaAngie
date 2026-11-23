@@ -1,13 +1,13 @@
 const CARGOS = ["Administrativo", "Docente"];
 
 class VistaUsuarios extends HTMLElement {
-  constructor() {
-    super();
-    this.idEditando = null; // null = creando; un id = editando
-  }
+    constructor() {
+        super();
+        this.idEditando = null; // null = creando; un id = editando
+    }
 
-  connectedCallback() {
-    this.innerHTML = `
+    connectedCallback() {
+        this.innerHTML = `
       <div class="encabezado-pagina">
         <p class="sobretitulo">Administración</p>
         <h1>Gestión de usuarios</h1>
@@ -58,68 +58,128 @@ class VistaUsuarios extends HTMLElement {
         </section>
       </div>`;
 
-    this.formulario = this.querySelector("#form-usuario");
-    this.cuerpoTabla = this.querySelector("#tabla-usuarios");
+        this.formulario = this.querySelector("#form-usuario");
+        this.cuerpoTabla = this.querySelector("#tabla-usuarios");
 
-    this.formulario.addEventListener("submit", this.guardar);
-    this.cuerpoTabla.addEventListener("click", this.alHacerClicEnTabla);
-    this.querySelector("#u-cancelar").addEventListener("click", () => this.limpiarFormulario());
-    this.querySelector("#buscar-usuario").addEventListener("input", () => this.pintarTabla());
+        this.formulario.addEventListener("submit", this.guardar);
+        this.cuerpoTabla.addEventListener("click", this.alHacerClicEnTabla);
+        this.querySelector("#u-cancelar").addEventListener("click", () => this.limpiarFormulario());
+        this.querySelector("#buscar-usuario").addEventListener("input", () => this.pintarTabla());
 
-    this.pintarTabla();
-  }
+        this.pintarTabla();
+    }
     // ---------- Tabla ----------
-  pintarTabla() {
-    const usuarios = leerLista(CLAVES.usuarios);
-    const busqueda = this.querySelector("#buscar-usuario").value.trim().toLowerCase();
-    const filtrados = usuarios.filter(
-      (u) => u.nombre.toLowerCase().includes(busqueda) || u.email.includes(busqueda)
-    );
+    pintarTabla() {
+        const usuarios = leerLista(CLAVES.usuarios);
+        const busqueda = this.querySelector("#buscar-usuario").value.trim().toLowerCase();
+        const filtrados = usuarios.filter(
+            (u) => u.nombre.toLowerCase().includes(busqueda) || u.email.includes(busqueda)
+        );
 
-    this.querySelector("#contador-usuarios").textContent = usuarios.length;
-    this.cuerpoTabla.replaceChildren();
+        this.querySelector("#contador-usuarios").textContent = usuarios.length;
+        this.cuerpoTabla.replaceChildren();
 
-    if (filtrados.length === 0) {
-      const fila = crearElemento("tr");
-      const celda = crearElemento("td", ["tabla__vacia"], "No hay usuarios para mostrar.");
-      celda.setAttribute("colspan", "6");
-      fila.append(celda);
-      this.cuerpoTabla.append(fila);
-      return;
+        if (filtrados.length === 0) {
+            const fila = crearElemento("tr");
+            const celda = crearElemento("td", ["tabla__vacia"], "No hay usuarios para mostrar.");
+            celda.setAttribute("colspan", "6");
+            fila.append(celda);
+            this.cuerpoTabla.append(fila);
+            return;
+        }
+
+        for (const usuario of filtrados) {
+            const { id, identificacion, nombre, email, telefono, cargo } = usuario;
+            const fila = crearElemento("tr");
+            fila.setAttribute("data-id", id);
+            fila.classList.toggle("fila--editando", id === this.idEditando);
+
+            const datos = [
+                ["Identificación", identificacion],
+                ["Nombre", nombre],
+                ["Email", email],
+                ["Teléfono", telefono],
+            ];
+            datos.forEach(([titulo, valor]) => {
+                const celda = crearElemento("td", undefined, valor);
+                celda.setAttribute("data-titulo", titulo);
+                fila.append(celda);
+            });
+
+            const celdaCargo = crearElemento("td");
+            celdaCargo.setAttribute("data-titulo", "Cargo");
+            const claseCargo = cargo === "Docente" ? "etiqueta--verde" : "etiqueta--azul";
+            celdaCargo.append(crearElemento("span", ["etiqueta", claseCargo], cargo));
+            fila.append(celdaCargo);
+
+            const celdaAcciones = crearElemento("td", ["tabla__acciones"]);
+            celdaAcciones.append(
+                crearBotonAccion("Editar", "editar", id, ["boton", "boton--secundario", "boton--pequeno"]),
+                crearBotonAccion("Eliminar", "eliminar", id, ["boton", "boton--peligro", "boton--pequeno"])
+            );
+            fila.append(celdaAcciones);
+
+            this.cuerpoTabla.append(fila);
+        }
+    }
+    alHacerClicEnTabla = (e) => {
+        const accion = e.target.getAttribute("data-accion");
+        const id = e.target.getAttribute("data-id");
+        if (accion === "editar") {
+            this.editar(id);
+        }
+        if (accion === "eliminar") {
+            this.eliminar(id);
+        }
+    };
+
+    // ---------- Formulario ----------
+    editar(id) {
+        const usuario = leerLista(CLAVES.usuarios).find((u) => u.id === id);
+        if (usuario === undefined) {
+            return;
+        }
+        this.idEditando = id;
+        document.getElementById("u-identificacion").value = usuario.identificacion;
+        document.getElementById("u-nombre").value = usuario.nombre;
+        document.getElementById("u-email").value = usuario.email;
+        document.getElementById("u-telefono").value = usuario.telefono;
+        document.getElementById("u-cargo").value = usuario.cargo;
+        document.getElementById("u-password").value = "";
+
+        this.querySelector("#titulo-form-usuario").textContent = "Editar usuario";
+        this.querySelector("#u-guardar").textContent = "Guardar cambios";
+        this.querySelector("#u-cancelar").classList.remove("oculto");
+        this.querySelector("#ayuda-password").classList.remove("oculto");
+        this.querySelector("#tarjeta-form-usuario").classList.add("tarjeta--editando");
+        limpiarErrores(this.formulario);
+        this.pintarTabla();
+    }
+    limpiarFormulario() {
+        this.idEditando = null;
+        ["u-identificacion", "u-nombre", "u-email", "u-telefono", "u-cargo", "u-password"].forEach((idInput) => {
+            document.getElementById(idInput).value = "";
+        });
+        this.querySelector("#titulo-form-usuario").textContent = "Nuevo usuario";
+        this.querySelector("#u-guardar").textContent = "Crear usuario";
+        this.querySelector("#u-cancelar").classList.add("oculto");
+        this.querySelector("#ayuda-password").classList.add("oculto");
+        this.querySelector("#tarjeta-form-usuario").classList.remove("tarjeta--editando");
+        limpiarErrores(this.formulario);
+        this.pintarTabla();
     }
 
-    for (const usuario of filtrados) {
-      const { id, identificacion, nombre, email, telefono, cargo } = usuario;
-      const fila = crearElemento("tr");
-      fila.setAttribute("data-id", id);
-      fila.classList.toggle("fila--editando", id === this.idEditando);
+    guardar = (e) => {
+        e.preventDefault();
+        limpiarErrores(this.formulario);
 
-      const datos = [
-        ["Identificación", identificacion],
-        ["Nombre", nombre],
-        ["Email", email],
-        ["Teléfono", telefono],
-      ];
-      datos.forEach(([titulo, valor]) => {
-        const celda = crearElemento("td", undefined, valor);
-        celda.setAttribute("data-titulo", titulo);
-        fila.append(celda);
-      });
-
-      const celdaCargo = crearElemento("td");
-      celdaCargo.setAttribute("data-titulo", "Cargo");
-      const claseCargo = cargo === "Docente" ? "etiqueta--verde" : "etiqueta--azul";
-      celdaCargo.append(crearElemento("span", ["etiqueta", claseCargo], cargo));
-      fila.append(celdaCargo);
-
-      const celdaAcciones = crearElemento("td", ["tabla__acciones"]);
-      celdaAcciones.append(
-        crearBotonAccion("Editar", "editar", id, ["boton", "boton--secundario", "boton--pequeno"]),
-        crearBotonAccion("Eliminar", "eliminar", id, ["boton", "boton--peligro", "boton--pequeno"])
-      );
-      fila.append(celdaAcciones);
-
-      this.cuerpoTabla.append(fila);
+        const datos = {
+            identificacion: document.getElementById("u-identificacion").value.trim(),
+            nombre: document.getElementById("u-nombre").value.trim(),
+            email: document.getElementById("u-email").value.trim().toLowerCase(),
+            telefono: document.getElementById("u-telefono").value.trim(),
+            cargo: document.getElementById("u-cargo").value,
+            password: document.getElementById("u-password").value,
+        };
     }
-  }
 }
