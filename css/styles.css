@@ -316,6 +316,141 @@ main.contenedor {
     }
 }
 
+.dos-columnas {
+  display: grid;
+  grid-template-columns: minmax(280px, 360px) 1fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+.dos-columnas .tarjeta+.tarjeta {
+  margin-top: 0;
+}
+
+/* ---------- Tablas ---------- */
+.tabla-envoltura {
+  overflow-x: auto;
+  margin-top: 1rem;
+}
+
+.tabla {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.93rem;
+}
+
+.tabla th {
+  text-align: left;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--suave);
+  padding: 0.7rem;
+  background: #fafafd;
+  border-bottom: 1px solid var(--borde);
+}
+
+.tabla td {
+  padding: 0.75rem 0.7rem;
+  border-bottom: 1px solid var(--borde);
+}
+
+.tabla tbody tr:hover {
+  background: #fafaff;
+}
+
+.tabla__acciones {
+  white-space: nowrap;
+  text-align: right;
+}
+
+.tabla__acciones .boton+.boton {
+  margin-left: 0.4rem;
+}
+
+.tabla__vacia {
+  text-align: center;
+  color: var(--suave);
+  padding: 2rem !important;
+}
+
+.fila--editando {
+  background: var(--ambar-claro);
+}
+
+.etiqueta {
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  border-radius: 99px;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.etiqueta--azul {
+  background: var(--primario-claro);
+  color: var(--primario);
+}
+
+.etiqueta--verde {
+  background: var(--verde-claro);
+  color: var(--verde);
+}
+
+.etiqueta--amarilla {
+  background: var(--ambar-claro);
+  color: #92400e;
+}
+
+@media (max-width: 960px) {
+  .dos-columnas {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 700px) {
+
+  /* La tabla se convierte en tarjetas */
+  .tabla thead {
+    display: none;
+  }
+
+  .tabla,
+  .tabla tbody,
+  .tabla tr,
+  .tabla td {
+    display: block;
+    width: 100%;
+  }
+
+  .tabla tr {
+    border: 1px solid var(--borde);
+    border-radius: 12px;
+    margin-bottom: 0.75rem;
+    padding: 0.4rem 0;
+  }
+
+  .tabla td {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    border: 0;
+    padding: 0.4rem 0.8rem;
+    text-align: right;
+  }
+
+  .tabla td[data-titulo]::before {
+    content: attr(data-titulo);
+    font-weight: 700;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    color: var(--suave);
+    text-align: left;
+  }
+
+  .tabla__acciones {
+    justify-content: flex-end !important;
+  }
+}
 
 /* ---------- Pie ---------- */
 .pie {
