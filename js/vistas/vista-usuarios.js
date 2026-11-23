@@ -181,5 +181,101 @@ class VistaUsuarios extends HTMLElement {
             cargo: document.getElementById("u-cargo").value,
             password: document.getElementById("u-password").value,
         };
+        const usuarios = leerLista(CLAVES.usuarios);
+        // Los demás usuarios (sin el que se está editando), para revisar repetidos
+        const otros = usuarios.filter((u) => u.id !== this.idEditando);
+        let valido = true;
+
+        if (!soloDigitos(datos.identificacion) || datos.identificacion.length < 5) {
+            marcarError("u-identificacion", "Usa solo números (mínimo 5 dígitos).");
+            valido = false;
+        } else if (otros.find((u) => u.identificacion === datos.identificacion) !== undefined) {
+            marcarError("u-identificacion", "Ya existe un usuario con esta identificación.");
+            valido = false;
+        }
+        if (datos.nombre.length < 3) {
+            marcarError("u-nombre", "Escribe el nombre completo.");
+            valido = false;
+        }
+        if (!esCorreoValido(datos.email)) {
+            marcarError("u-email", "Escribe un email válido.");
+            valido = false;
+        } else if (otros.find((u) => u.email === datos.email) !== undefined) {
+            marcarError("u-email", "Este email ya está registrado.");
+            valido = false;
+        }
+        if (!soloDigitos(datos.telefono) || datos.telefono.length < 7) {
+            marcarError("u-telefono", "Usa solo números (mínimo 7 dígitos).");
+            valido = false;
+        }
+        if (CARGOS.indexOf(datos.cargo) === -1) {
+            marcarError("u-cargo", "Selecciona un cargo.");
+            valido = false;
+        }
+        // Al crear, la contraseña es obligatoria. Al editar, solo si se escribe una nueva.
+        const debeValidarPassword = this.idEditando === null || datos.password !== "";
+        if (debeValidarPassword && datos.password.length < 6) {
+            marcarError("u-password", "Mínimo 6 caracteres.");
+            valido = false;
+        }
+
+        if (!valido) {
+            return;
+        }
+
+        if (this.idEditando === null) {
+            usuarios.push({ ...datos, id: generarId("u") });
+            guardarLista(CLAVES.usuarios, usuarios);
+            avisar("Usuario creado correctamente.", "exito");
+        } else {
+            const actualizados = usuarios.map((u) => {
+                if (u.id !== this.idEditando) {
+                    return u;
+                }
+                const password = datos.password === "" ? u.password : datos.password;
+                return { ...u, ...datos, password: password };
+            });
+            guardarLista(CLAVES.usuarios, actualizados);
+            avisar("Usuario actualizado.", "exito");
+            // Si me edité a mí mismo, el encabezado debe mostrar el nombre nuevo
+            const actual = obtenerUsuarioActual();
+            if (actual !== null && actual.id === this.idEditando) {
+                document.dispatchEvent(new CustomEvent("app:sesion"));
+            }
+        }
+        this.limpiarFormulario();
+    };
+
+    async eliminar(id) {
+        const actual = obtenerUsuarioActual();
+        if (actual !== null && actual.id === id) {
+            avisar("No puedes eliminar tu propia cuenta mientras tienes la sesión abierta.", "alerta");
+            return;
+        }
+        const usuario = leerLista(CLAVES.usuarios).find((u) => u.id === id);
+        const confirmado = await abrirModal({
+            titulo: "Eliminar usuario",
+            mensaje: `¿Seguro que deseas eliminar a ${usuario.nombre}? Esta acción no se puede deshacer.`,
+            textoAceptar: "Eliminar",
+            peligro: true,
+        });
+        if (confirmado === null) {
+            return;
+        }
+
+        // Animación de salida de la fila antes de borrarla
+        const fila = this.cuerpoTabla.querySelector(`[data-id="${id}"]`);
+        await fila.animate([{ opacity: 1 }, { opacity: 0, transform: "translateX(30px)" }], 300).finished;
+
+        const restantes = leerLista(CLAVES.usuarios).filter((u) => u.id !== id);
+        guardarLista(CLAVES.usuarios, restantes);
+        avisar("Usuario eliminado.", "info");
+        if (this.idEditando === id) {
+            this.limpiarFormulario();
+        } else {
+            this.pintarTabla();
+        }
+
     }
 }
+customElements.define("vista-usuarios", VistaUsuarios);
