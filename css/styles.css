@@ -544,6 +544,123 @@ main.contenedor {
     flex-wrap: nowrap;
   }
 }
+.codigo {
+  display: inline-block;
+  padding: 0.15rem 0.5rem;
+  border-radius: 6px;
+  background: var(--primario-claro);
+  color: var(--primario);
+  font-weight: 700;
+  font-family: monospace;
+}
+
+/* ---------- Catálogo ---------- */
+.portada {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding: 2.25rem;
+  margin-bottom: 1.5rem;
+  border-radius: 20px;
+  color: #dfe1ff;
+  background: linear-gradient(140deg, var(--primario), #2a2486);
+}
+
+.portada h1 {
+  color: var(--blanco);
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
+  margin-bottom: 0.4rem;
+}
+
+.portada>div {
+  max-width: 560px;
+}
+
+.banner {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.5rem;
+  border-radius: var(--radio);
+  background: var(--ambar-claro);
+  border: 1px solid #fde3a7;
+  color: #78350f;
+}
+
+.tarjetas-examen {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+  gap: 1.25rem;
+}
+
+.tarjeta-examen {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1.4rem;
+  background: var(--blanco);
+  border: 1px solid var(--borde);
+  border-radius: var(--radio);
+  box-shadow: var(--sombra);
+  transition: transform 0.25s, box-shadow 0.25s;
+}
+
+.tarjeta-examen:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px -20px rgba(27, 31, 59, 0.4);
+}
+
+.tarjeta-examen__superior {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.tarjeta-examen__titulo {
+  font-size: 1.2rem;
+}
+
+.tarjeta-examen__descripcion {
+  color: var(--suave);
+  font-size: 0.92rem;
+  flex: 1;
+}
+
+.tarjeta-examen__datos {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.6rem;
+  margin: 0;
+}
+
+.tarjeta-examen__datos div {
+  padding: 0.6rem 0.75rem;
+  border-radius: 10px;
+  background: #f8f8fd;
+}
+
+.tarjeta-examen__datos dt {
+  font-size: 0.75rem;
+  color: var(--suave);
+  font-weight: 700;
+}
+
+.tarjeta-examen__datos dd {
+  margin: 0;
+  font-weight: 800;
+  color: var(--tinta);
+}
+
+@media (max-width: 700px) {
+  .portada {
+    padding: 1.5rem;
+  }
+}
 
 /* ---------- Pie ---------- */
 .pie {
