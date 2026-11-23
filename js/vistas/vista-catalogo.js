@@ -1,5 +1,5 @@
 class VistaCatalogo extends HTMLElement {
-    
+
     connectedCallback() {
         this.innerHTML = `
       <section class="portada">
@@ -95,4 +95,63 @@ class VistaCatalogo extends HTMLElement {
             );
         });
     }
+    alHacerClic = (e) => {
+        if (e.target.getAttribute("data-accion") === "presentar") {
+            this.empezar(e.target.getAttribute("data-id"));
+        }
+    };
+
+    // Pide identificación y nombre antes de empezar el examen
+    async empezar(examenId) {
+        const examen = leerLista(CLAVES.examenes).find((ex) => ex.id === examenId);
+        const intentoActual = leerIntento();
+
+        if (intentoActual !== null && intentoActual.examenId === examenId) {
+            navegar("presentar");
+            return;
+        }
+
+        // Se recuerdan los datos de la última persona (sessionStorage)
+        const ultimo = JSON.parse(sessionStorage.getItem("acme_ultimo_estudiante"));
+
+        const datos = await abrirModal({
+            titulo: examen.titulo,
+            mensaje: `Tendrás ${examen.tiempo} minutos para responder ${examen.preguntas.length} pregunta(s). Necesitas ${examen.aprobacion}% para aprobar. El reloj empieza al confirmar.`,
+            textoAceptar: "Comenzar examen",
+            campos: [
+                { id: "c-identificacion", etiqueta: "Número de identificación", valor: ultimo !== null ? ultimo.identificacion : "" },
+                { id: "c-nombre", etiqueta: "Nombre completo", valor: ultimo !== null ? ultimo.nombre : "" },
+            ],
+            validar: (valores) => {
+                if (!soloDigitos(valores["c-identificacion"])) {
+                    return "La identificación debe tener solo números.";
+                }
+                if (valores["c-nombre"].length < 3) {
+                    return "Escribe tu nombre completo.";
+                }
+                return "";
+            },
+        });
+
+        if (datos === null) {
+            return; // canceló
+        }
+
+        const estudiante = { identificacion: datos["c-identificacion"], nombre: datos["c-nombre"] };
+        sessionStorage.setItem("acme_ultimo_estudiante", JSON.stringify(estudiante));
+
+        if (intentoActual !== null) {
+            avisar("Se descartó el examen que tenías en curso.", "alerta");
+        }
+
+        guardarIntento({
+            examenId: examenId,
+            ...estudiante,
+            respuestas: {}, // { idPregunta: idRespuesta }
+            segundosRestantes: examen.tiempo * 60,
+        });
+        navegar("presentar");
+    }
 }
+
+customElements.define("vista-catalogo", VistaCatalogo);
