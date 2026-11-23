@@ -1,12 +1,21 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="js/utilidades.js" defer></script>
+  <script src="js/almacenamiento.js" defer></script>
+  <script src="js/componentes/acme-aviso.js" defer></script>
+  <script src="js/componentes/acme-modal.js" defer></script>
+  <script src="js/componentes/acme-encabezado.js" defer></script>
+  <script src="js/componentes/acme-app.js" defer></script>
+
   <link rel="icon" type="image/png" href="img/logo.png">
   <title>Acme School | Plataforma de exámenes</title>
   <link rel="stylesheet" href="css/styles.css" />
 </head>
+
 <body>
 
   <acme-encabezado></acme-encabezado>
@@ -21,7 +30,7 @@
   <acme-aviso></acme-aviso>
 
   <template id="tpl-temporizador">
-    
+
     <style>
       .reloj {
         display: grid;
@@ -29,6 +38,7 @@
         min-width: 150px;
         font-family: system-ui, sans-serif;
       }
+
       .etiqueta {
         font-size: 12px;
         font-weight: 700;
@@ -36,33 +46,45 @@
         text-transform: uppercase;
         color: #6b7090;
       }
+
       .tiempo {
         font-size: 30px;
         font-weight: 800;
         color: #1b1f3b;
       }
+
       .barra {
         height: 6px;
         border-radius: 99px;
         background: #e0e3ff;
         overflow: hidden;
       }
+
       .relleno {
         height: 100%;
         width: 100%;
         background: #4338ca;
         transition: width 1s linear;
       }
-      .reloj--alerta .tiempo { color: #dc2626; }
-      .reloj--alerta .relleno { background: #dc2626; }
+
+      .reloj--alerta .tiempo {
+        color: #dc2626;
+      }
+
+      .reloj--alerta .relleno {
+        background: #dc2626;
+      }
     </style>
-    
+
     <div class="reloj" role="timer" aria-label="Tiempo restante">
       <span class="etiqueta">Tiempo restante</span>
       <span class="tiempo" id="tiempo">00:00</span>
-      <div class="barra"><div class="relleno" id="relleno"></div></div>
+      <div class="barra">
+        <div class="relleno" id="relleno"></div>
+      </div>
     </div>
   </template>
 
 </body>
+
 </html>
