@@ -14,8 +14,6 @@ La escuela Acme puede administrar usuarios y exámenes, y los estudiantes pueden
 
 > Se necesita Live Server porque los datos iniciales se cargan con `fetch("data/semilla.json")`, y `fetch` falla si el HTML se abre con doble clic
 
-**Cuenta de prueba:** `admin@acme.edu` / `Admin123`
-
 ---
 
 ## Módulos
@@ -28,7 +26,16 @@ La escuela Acme puede administrar usuarios y exámenes, y los estudiantes pueden
 | **Resolución de exámenes** | Público | Lista de exámenes. Pide identificación y nombre, muestra el encabezado, las preguntas numeradas, el reloj y el botón Terminar. Al final muestra el porcentaje y si aprobó. |
 
 ---
+## Vistas
+### 1. Examenes disponibles: `<vista-catalogo>` (publica)
+<img src="img/logo.png" alt="vista xamenes disponibles" width="400">
+### 2. Presentar examen: `<vista-presentar>` (publica)
+### 3. Iniciar sesion: `<vista-login>` (publica)
+### 4. Gestin de examenes: `<vista-examenes>` (privada)
+### 5. Gestion de usuarios: `<vista-usuarios>` (privada)
 
+
+---
 ## Estructura de archivos
 
 ```
@@ -36,7 +43,10 @@ ProyectoAcmeschool/
 ├── index.html                    # Estructura, plantilla del reloj y scripts
 ├── README.md
 ├── css/
-│   └── styles.css                # Colores, componentes, responsive
+│   ├── base.css                  # Variables de color, estilos generales, botones, tarjetas, formularios
+│   ├── componentes.css           # Barra de navegación y modal
+│   ├── administracion.css        # Login, tablas, usuarios y editor de exámenes
+│   └── estudiantes.css           # Lista de exámenes, examen y resultado
 ├── data/
 │   └── semilla.json              # Datos iniciales
 └── js/
