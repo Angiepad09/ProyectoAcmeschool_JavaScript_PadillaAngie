@@ -27,12 +27,23 @@ La escuela Acme puede administrar usuarios y exámenes, y los estudiantes pueden
 
 ---
 ## Vistas
-### 1. Examenes disponibles: `<vista-catalogo>` (publica)
-<img src="img/logo.png" alt="vista xamenes disponibles" width="400">
-### 2. Presentar examen: `<vista-presentar>` (publica)
-### 3. Iniciar sesion: `<vista-login>` (publica)
-### 4. Gestin de examenes: `<vista-examenes>` (privada)
-### 5. Gestion de usuarios: `<vista-usuarios>` (privada)
+### 1. Examenes disponibles: `vista-catalogo`
+<p align="center"><img src="img/examenes_disponibles.png" alt="vista examenes disponibles" width="600"></p>
+
+### 2. Presentar examen: `vista-presentar`
+<p align="center"><img src="img/presentar_examen.png" alt="Modal presentar examen" width="600"></p>
+
+### 3. Iniciar sesion: `vista-login`
+<p align="center"><img src="img/Inicio_sesion.png" alt="Vista iniciar sesion" width="600"></p>
+
+### 4. Gestion de examenes: `vista-examenes`
+<p align="center"><img src="img/gestion_examenes.png" alt="Gestion Examenes" width="600"></p>
+
+### 5. Gestion de usuarios: `vista-usuarios`
+<p align="center"><img src="img/gestion_usuario.png" alt="Gestion Usuarios" width="600"></p>
+
+### 6. Vista Movil:
+<p align="center"><img src="img/vista_movil.png" alt="Vista movil" width="400"></p>
 
 
 ---
