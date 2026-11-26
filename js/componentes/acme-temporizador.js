@@ -24,6 +24,7 @@ class AcmeTemporizador extends HTMLElement {
     connectedCallback() {
         const plantilla = document.getElementById("tpl-temporizador");
         this.shadowRoot.appendChild(plantilla.content.cloneNode(true));
+        this.fin = Date.now() + this.segundos * 1000;
         this.activo = true;
         this.pintar();
         this.siguienteSegundo();
@@ -40,8 +41,9 @@ class AcmeTemporizador extends HTMLElement {
                 return;
             }
             // Cambiar el atributo dispara attributeChangedCallback → pintar()
-            this.setAttribute("segundos", this.segundos - 1);
-
+            const restantes = Math.max(0, Math.round((this.fin - Date.now()) / 1000));
+            this.setAttribute("segundos", restantes);
+            
             this.dispatchEvent(
                 new CustomEvent("tiempo-tic", { detail: { segundos: this.segundos }, bubbles: true })
             );

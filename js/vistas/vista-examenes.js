@@ -312,6 +312,7 @@ class VistaExamenes extends HTMLElement {
         limpiarErrores(this.formulario);
         this.pintarTabla();
         this.pintarPreguntas();
+        this.querySelector("#tarjeta-form-examen").scrollIntoView({ behavior: "smooth" });
     }
 
     limpiarFormulario() {

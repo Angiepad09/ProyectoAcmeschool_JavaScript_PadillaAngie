@@ -154,6 +154,7 @@ class VistaUsuarios extends HTMLElement {
         this.querySelector("#tarjeta-form-usuario").classList.add("tarjeta--editando");
         limpiarErrores(this.formulario);
         this.pintarTabla();
+        this.querySelector("#tarjeta-form-usuario").scrollIntoView({ behavior: "smooth" });
     }
     limpiarFormulario() {
         this.idEditando = null;

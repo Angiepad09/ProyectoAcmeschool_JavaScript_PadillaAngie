@@ -50,6 +50,7 @@ class AcmeModal extends HTMLElement {
       ],200
     );
 
+    this.querySelector("input, #modal-aceptar").focus();
     return new Promise((resolve) => {
       this.resolver = resolve;
       this.querySelector("#modal-cancelar").addEventListener("click", () => this.cerrar(null));

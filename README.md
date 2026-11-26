@@ -22,7 +22,7 @@ La escuela Acme puede administrar usuarios y exámenes, y los estudiantes pueden
 |---|---|---|
 | **Login** | Público | Inicia sesión con email y contraseña. La sesión se guarda en `sessionStorage`. |
 | **Gestión de usuarios** | Privado | Tabla de usuarios, formulario de creación/actualización, botones Editar y Eliminar. Campos: identificación, nombre completo, email, teléfono, cargo (Administrativo / Docente) y contraseña. |
-| **Gestión de exámenes** | Privado | Tabla de exámenes, formulario, botones Editar y Eliminar. Campos: código, título, tiempo, porcentaje de aprobación y descripción. Cada examen tiene preguntas con respuestas.
+| **Gestión de exámenes** | Privado | Tabla de exámenes, formulario, botones Editar y Eliminar. Campos: código, título, tiempo, porcentaje de aprobación y descripción. Cada examen tiene preguntas con respuestas.|
 | **Resolución de exámenes** | Público | Lista de exámenes. Pide identificación y nombre, muestra el encabezado, las preguntas numeradas, el reloj y el botón Terminar. Al final muestra el porcentaje y si aprobó. |
 
 ---
@@ -118,7 +118,7 @@ Comunicación entre componentes con **CustomEvent**:
 ## Temporizador
 
 - Al empezar, el examen guarda `segundosRestantes = tiempo × 60`.
-- `<acme-temporizador>` usa `setTimeout` de 1 segundo que se vuelve a programar a sí mismo. En cada segundo cambia su atributo, y vuelve a pintar el reloj.
+- `<acme-temporizador>` guarda la hora en que termina el examen (Date.now() + segundos) y cada segundo calcula el tiempo restante con la hora real, así el reloj no se atrasa aunque el navegador frene los setTimeout en pestañas ocultas.
 - Cada segundo emite `tiempo-tic` y la vista guarda el tiempo restante en localStorage. Si se recarga la página, el examen sigue donde iba.
 - En el último minuto el reloj se pone rojo.
 - Al llegar a 0 emite `tiempo-agotado` y el examen se envía solo.
@@ -129,7 +129,5 @@ Comunicación entre componentes con **CustomEvent**:
 ## Limitaciones conocidas
 
 - Es una app 100 % frontend: las contraseñas quedan guardadas en localStorage como texto. En un sistema real se validarían en un servidor.
-- Si el estudiante sale de la vista del examen, el reloj se pausa y continúa al volver.
 
 ---
-
